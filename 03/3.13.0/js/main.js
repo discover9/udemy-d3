@@ -4,15 +4,35 @@
 *    Project 1 - Star Break Coffee
 */
 
-const MARGIN = { LEFT: 60, RIGHT: 60, TOP: 20, BOTTOM: 60 };
+const MARGIN = { LEFT: 100, RIGHT: 60, TOP: 20, BOTTOM: 150 };
 const WIDTH = 600 - MARGIN.LEFT - MARGIN.RIGHT;
 const HEIGHT = 600 - MARGIN.TOP - MARGIN.BOTTOM;
 
-const g = d3.select("#chart-area").append("svg")
+const svg = d3.select("#chart-area").append("svg")
     .attr("width", WIDTH + MARGIN.LEFT + MARGIN.RIGHT)
     .attr("height", HEIGHT + MARGIN.TOP + MARGIN.BOTTOM)
-    .append("g")
+    
+const g = svg.append("g")
     .attr("transform", `translate(${MARGIN.LEFT}, ${MARGIN.TOP})`)
+
+// X Label
+g.append("text")
+  .attr("class", "x axis-label")
+  .attr("x", WIDTH / 2)
+  .attr("y", HEIGHT + 110)
+  .attr("font-size", "20px")
+  .attr("text-anchor", "middle")
+  .text("Months")
+
+// Y Label
+g.append("text")
+  .attr("class", "y axis-label")
+  .attr("x", - (HEIGHT / 2))
+  .attr("y", -60)
+  .attr("font-size", "20px")
+  .attr("text-anchor", "middle")
+  .attr("transform", "rotate(-90)")
+  .text("Revenue")
 
 d3.csv("data/revenues.csv").then(data => {
     data.forEach(d => {
@@ -29,7 +49,7 @@ d3.csv("data/revenues.csv").then(data => {
 
     const y = d3.scaleLinear()
         .domain([0, d3.max(data, d => d.revenue)])
-        .range([0, HEIGHT])
+        .range([HEIGHT, 0])
 
     const xAxisCall = d3.axisBottom(x)
 
@@ -44,6 +64,7 @@ d3.csv("data/revenues.csv").then(data => {
             .attr("transform", "rotate(-40)")
 
     const yAxisCall = d3.axisLeft(y)
+      .tickFormat(d => "$" + d)
 
     g.append("g")
         .attr("class", "y axis")
@@ -51,22 +72,13 @@ d3.csv("data/revenues.csv").then(data => {
 
     const revenues = g.selectAll("rect")
         .data(data);
-    // const profits = g.selectAll("rect") 
-    //     .data(data)
 
     revenues.enter().append("rect")
-        .attr("y", 0)
+        .attr("y", d => y(d.revenue))
         .attr("x", (d, i) => x(d.month))
         .attr("width", x.bandwidth)
-        .attr("height", d => y(d.revenue))
+        .attr("height", d => HEIGHT - y(d.revenue))
         .attr("fill", "grey");
-
-    // profits.enter().append("rect")
-    //     .attr("y", 0)
-    //     .attr("x", (d, i) => (i * 60))
-    //     .attr("width", 40)
-    //     .attr("height", d => d.profit)
-    //     .attr("fill", "grey")
 
 }).catch(error => {
     console.log(error)
