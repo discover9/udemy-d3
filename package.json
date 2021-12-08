@@ -1,0 +1,22 @@
+{
+  "name": "udemy-d3",
+  "version": "1.0.0",
+  "description": "A collection of files for \"Mastering data visualization in D3.js\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/discover9/udemy-d3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/discover9/udemy-d3/issues"
+  },
+  "homepage": "https://github.com/discover9/udemy-d3#readme",
+  "dependencies": {
+    "http-server": "^14.0.0"
+  }
+}
